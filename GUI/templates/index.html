@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="text-center">
+    <h1 class="mb-4">Welcome to Screen Locker Dashboard</h1>
+    <p class="lead">Manage authorized users below.</p>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-6 mb-4">
+        <div class="card shadow p-4 text-center">
+            <h5 class="card-title">➕ Add User</h5>
+            <p>Add a new authorized user via webcam.</p>
+            <a href="/add_user" class="btn btn-success">Add User</a>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card shadow p-4 text-center">
+            <h5 class="card-title">View Users</h5>
+            <p>See the list of currently authorized users.</p>
+            <a href="/view_users" class="btn btn-info">View Users</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
