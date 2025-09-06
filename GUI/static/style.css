@@ -1,0 +1,120 @@
+/* ===== General Styling ===== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+    color: #f5f5f5;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* ===== Navbar ===== */
+.navbar {
+    background: #141422 !important;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
+}
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.4rem;
+    color: #ffcc70 !important;
+}
+.navbar .btn {
+    margin-left: 10px;
+}
+
+/* ===== Headings ===== */
+h1, h2, h3, h4, h5 {
+    color: #ffcc70;
+    font-weight: 600;
+}
+
+/* ===== Cards ===== */
+.card {
+    background: #2d2d44;
+    color: #f5f5f5;
+    border: none;
+    border-radius: 15px;
+    transition: all 0.3s ease-in-out;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.6);
+}
+.card-title {
+    color: #ffd369;
+    font-size: 1.2rem;
+}
+
+/* ===== Buttons ===== */
+.btn {
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+}
+.btn-primary {
+    background: #4cc9f0;
+    border: none;
+}
+.btn-primary:hover {
+    background: #3a86ff;
+}
+.btn-success {
+    background: #06d6a0;
+    border: none;
+}
+.btn-success:hover {
+    background: #04b383;
+}
+.btn-info {
+    background: #ffb703;
+    border: none;
+}
+.btn-info:hover {
+    background: #fb8500;
+}
+.btn-danger {
+    background: #ef233c;
+    border: none;
+}
+.btn-danger:hover {
+    background: #d90429;
+}
+.btn-secondary {
+    background: #8d99ae;
+    border: none;
+}
+.btn-secondary:hover {
+    background: #6c757d;
+}
+
+/* ===== Tables ===== */
+.table {
+    background: #2d2d44;
+    color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.table thead {
+    background: #141422;
+}
+.table td, .table th {
+    vertical-align: middle;
+}
+
+/* ===== Forms ===== */
+input[type="text"] {
+    background: #2d2d44;
+    color: #fff;
+    border: 1px solid #444;
+    border-radius: 8px;
+}
+input[type="text"]:focus {
+    outline: none;
+    border-color: #4cc9f0;
+    box-shadow: 0 0 5px #4cc9f0;
+}
+
+/* ===== Layout Spacing ===== */
+.container {
+    margin-top: 30px;
+}
