@@ -1,1 +1,12 @@
+Screen Locker Dashboard: User Management Interface [GUI]
 
+> The web-based GUI serves as the administrative dashboard for the Context-Aware Screen Locker. 
+> Its primary function is to manage the list of authorized users whose faces the system will recognize for controlling access to the device.
+
+> The dashboard provides two core functionalities:
+
+1. Add User (Enrollment): Allows an administrator to enroll a new authorized user by entering their name and capturing their facial biometrics via a connected webcam. This process creates the necessary data for the system's face detection logic.
+
+2. View Users (Management): Displays a list of all currently authorized users. This section includes an "Actions" column with a "Remove" button, enabling the administrator to easily de-authorize and delete a user's face data from the system when necessary.
+
+This dashboard is the essential control panel for setting up the user base, defining the authorized user identity, and enabling the project's core function: intelligently adapting screen security based on the real-time presence of a trusted individual.
