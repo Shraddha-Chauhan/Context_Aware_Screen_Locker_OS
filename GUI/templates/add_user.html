@@ -1,14 +1,43 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="card shadow p-4">
-    <h2 class="mb-4">Add New User</h2>
-    <form method="POST">
-        <div class="mb-3">
-            <label for="name" class="form-label">User Name</label>
-            <input type="text" name="name" class="form-control" required>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card form-card shadow-lg p-4">
+            <h3 class="text-center text-warning mb-4">
+                <i class="bi bi-person-plus"></i> Register New User
+            </h3>
+            
+            <div class="alert alert-info mb-4">
+                <h6><i class="bi bi-info-circle"></i> How it works:</h6>
+                <ul class="mb-0 small">
+                    <li>Enter the user's name</li>
+                    <li>Click "Capture Face & Register"</li>
+                    <li>Allow camera access when prompted</li>
+                    <li>Face embedding will be stored securely</li>
+                </ul>
+            </div>
+
+            <form method="POST">
+                <div class="mb-4">
+                    <label for="name" class="form-label fw-semibold">User Name</label>
+                    <input type="text" name="name" class="form-control form-control-lg bg-dark text-light border-0" 
+                           placeholder="Enter full name" required>
+                </div>
+                
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-lg me-3">
+                        <i class="bi bi-camera"></i> Capture Face & Register
+                    </button>
+                    <a href="/" class="btn btn-secondary btn-lg">Cancel</a>
+                </div>
+            </form>
+
+            <div class="mt-4 text-center">
+                <small class="user-description">
+                    <i class="bi bi-shield-lock"></i> Face embeddings are stored securely in <code>authorized_users.pkl</code>
+                </small>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary">📷 Capture Face</button>
-        <a href="/" class="btn btn-secondary">Cancel</a>
-    </form>
+    </div>
 </div>
 {% endblock %}
