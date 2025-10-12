@@ -1,24 +1,88 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="text-center">
-    <h1 class="mb-4">Welcome to Screen Locker Dashboard</h1>
-    <p class="lead">Manage authorized users below.</p>
-</div>
+<div class="container">
+    <!-- Welcome Section -->
+    <div class="text-center mb-5 fade-in">
+        <h1 class="display-4 text-warning mb-3">
+            <i class="bi bi-shield-lock"></i> Screen Locker Dashboard
+        </h1>
+        <p class="lead">Secure access control using facial recognition</p>
+    </div>
 
-<div class="row mt-5">
-    <div class="col-md-6 mb-4">
-        <div class="card shadow p-4 text-center">
-            <h5 class="card-title">➕ Add User</h5>
-            <p>Add a new authorized user via webcam.</p>
-            <a href="/add_user" class="btn btn-success">Add User</a>
+    <!-- Stats Cards -->
+    <div class="row mb-5">
+        <div class="col-md-6 mb-3">
+            <div class="card dashboard-card text-center p-4">
+                <div class="card-body">
+                    <i class="bi bi-people display-4 text-primary mb-3"></i>
+                    <h3 class="text-warning">{{ users|length }}</h3>
+                    <p class="stats-description">Registered Users</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card dashboard-card text-center p-4">
+                <div class="card-body">
+                    <i class="bi bi-shield-check display-4 text-info mb-3"></i>
+                    <h3 class="text-warning">Secure</h3>
+                    <p class="stats-description">Access Control</p>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="col-md-6 mb-4">
-        <div class="card shadow p-4 text-center">
-            <h5 class="card-title">View Users</h5>
-            <p>See the list of currently authorized users.</p>
-            <a href="/view_users" class="btn btn-info">View Users</a>
+
+    <!-- Quick Actions -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card dashboard-card">
+                <div class="card-body text-center p-5">
+                    <i class="bi bi-person-plus display-1 text-primary mb-4"></i>
+                    <h4 class="text-warning mb-3">Add New User</h4>
+                    <p class="user-description mb-4">Register a new user by capturing their face and storing the embedding securely in the system.</p>
+                    <a href="/add_user" class="btn btn-primary btn-lg">
+                        <i class="bi bi-camera"></i> Add New User
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- Recent Users (if any) -->
+    {% if users %}
+    <div class="card dashboard-card mt-4">
+        <div class="card-body">
+            <h4 class="text-warning mb-4">
+                <i class="bi bi-people"></i> Registered Users
+            </h4>
+            <div class="row">
+                {% for user in users %}
+                <div class="col-md-4 mb-3">
+                    <div class="card form-card p-3 text-center">
+                        <i class="bi bi-person-circle display-6 text-warning mb-2"></i>
+                        <h5 class="user-name">{{ user }}</h5>
+                        <small class="user-description">Authorized User</small>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="text-center mt-3">
+                <a href="/view_users" class="btn btn-outline-light">
+                    <i class="bi bi-list-ul"></i> Manage All Users
+                </a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="card dashboard-card mt-4">
+        <div class="card-body text-center p-5">
+            <i class="bi bi-people display-1 text-muted mb-3"></i>
+            <h4 class="text-warning">No Users Registered Yet</h4>
+            <p class="user-description">Get started by adding your first authorized user to the system.</p>
+            <a href="/add_user" class="btn btn-primary btn-lg">
+                <i class="bi bi-person-plus"></i> Add First User
+            </a>
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
