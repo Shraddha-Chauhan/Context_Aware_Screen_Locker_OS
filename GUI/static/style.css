@@ -1,120 +1,163 @@
-/* ===== General Styling ===== */
+/* === General Layout === */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1e1e2f, #2a2a40);
-    color: #f5f5f5;
+    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at top, #121228, #0d0d20 70%);
+    color: #e9ecef; /* Lighter text color for better readability */
+    overflow-x: hidden;
     min-height: 100vh;
-    margin: 0;
 }
 
-/* ===== Navbar ===== */
+/* === Navbar === */
 .navbar {
-    background: #141422 !important;
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
-}
-.navbar-brand {
-    font-weight: bold;
-    font-size: 1.4rem;
-    color: #ffcc70 !important;
-}
-.navbar .btn {
-    margin-left: 10px;
+    background: rgba(20, 20, 40, 0.9);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* ===== Headings ===== */
-h1, h2, h3, h4, h5 {
-    color: #ffcc70;
+.navbar .btn {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+.navbar .btn:hover {
+    transform: scale(1.05);
+}
+
+/* === Dashboard Cards === */
+.dashboard-card {
+    background: rgba(45, 45, 70, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    transition: all 0.4s ease-in-out;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+.dashboard-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(255, 204, 112, 0.2);
+}
+
+/* === Form Card === */
+.form-card {
+    background: rgba(35, 35, 55, 0.9);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* === Buttons === */
+.btn {
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    font-weight: 500;
+}
+.btn:hover {
+    transform: scale(1.05);
+}
+
+/* === Tables === */
+.table {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+.table-dark {
+    background: rgba(25, 25, 45, 0.9);
+}
+.table-hover tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* === Text Colors for Better Readability === */
+.text-light {
+    color: #e9ecef !important; /* Brighter light text */
+}
+
+.text-muted {
+    color: #adb5bd !important; /* Brighter muted text */
+}
+
+.lead {
+    color: #dee2e6 !important; /* Brighter lead text */
+}
+
+.card-body p {
+    color: #e9ecef !important; /* Ensure all card text is readable */
+}
+
+.card-body .text-light {
+    color: #e9ecef !important; /* Force light text in cards */
+}
+
+/* === User Name Specific Styling === */
+.user-name {
+    color: #ffffff !important; /* Pure white for user names */
     font-weight: 600;
 }
 
-/* ===== Cards ===== */
-.card {
-    background: #2d2d44;
-    color: #f5f5f5;
-    border: none;
-    border-radius: 15px;
-    transition: all 0.3s ease-in-out;
-}
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.6);
-}
-.card-title {
-    color: #ffd369;
-    font-size: 1.2rem;
+.card h5 {
+    color: #ffffff !important; /* Force white for all h5 headings in cards */
+    font-weight: 600;
 }
 
-/* ===== Buttons ===== */
-.btn {
-    border-radius: 8px;
-    padding: 8px 16px;
-    font-weight: 500;
-    transition: all 0.3s ease-in-out;
-}
-.btn-primary {
-    background: #4cc9f0;
-    border: none;
-}
-.btn-primary:hover {
-    background: #3a86ff;
-}
-.btn-success {
-    background: #06d6a0;
-    border: none;
-}
-.btn-success:hover {
-    background: #04b383;
-}
-.btn-info {
-    background: #ffb703;
-    border: none;
-}
-.btn-info:hover {
-    background: #fb8500;
-}
-.btn-danger {
-    background: #ef233c;
-    border: none;
-}
-.btn-danger:hover {
-    background: #d90429;
-}
-.btn-secondary {
-    background: #8d99ae;
-    border: none;
-}
-.btn-secondary:hover {
-    background: #6c757d;
+/* === Alert Boxes === */
+.alert {
+    color: #212529 !important; /* Dark text for alerts */
 }
 
-/* ===== Tables ===== */
-.table {
-    background: #2d2d44;
-    color: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-}
-.table thead {
-    background: #141422;
-}
-.table td, .table th {
-    vertical-align: middle;
+.alert-info {
+    background-color: rgba(13, 202, 240, 0.2);
+    border-color: #0dcaf0;
 }
 
-/* ===== Forms ===== */
-input[type="text"] {
-    background: #2d2d44;
-    color: #fff;
-    border: 1px solid #444;
-    border-radius: 8px;
-}
-input[type="text"]:focus {
-    outline: none;
-    border-color: #4cc9f0;
-    box-shadow: 0 0 5px #4cc9f0;
+.alert-info h6 {
+    color: #055160 !important;
 }
 
-/* ===== Layout Spacing ===== */
-.container {
-    margin-top: 30px;
+.alert-info ul {
+    color: #055160 !important;
+}
+
+/* === Form Labels === */
+.form-label {
+    color: #f8f9fa !important; /* Bright form labels */
+}
+
+/* === Badges === */
+.badge {
+    color: #212529 !important; /* Dark text for badges */
+}
+
+/* === Footer === */
+footer {
+    color: #adb5bd !important; /* Brighter footer text */
+    padding: 10px 0;
+}
+
+/* === Animations === */
+.fade-in {
+    animation: fadeIn 1.2s ease-in-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* === Custom text classes for specific elements === */
+.card-text {
+    color: #e9ecef !important;
+}
+
+.user-description {
+    color: #dee2e6 !important;
+}
+
+.stats-description {
+    color: #ced4da !important;
+}
+
+/* === Ensure all text in user cards is visible === */
+.card .text-light {
+    color: #ffffff !important;
+}
+
+.form-card h5 {
+    color: #ffffff !important;
 }
