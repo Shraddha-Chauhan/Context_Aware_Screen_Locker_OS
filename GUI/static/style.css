@@ -1,19 +1,18 @@
 /* === General Layout === */
 body {
     font-family: 'Poppins', sans-serif;
-    background: radial-gradient(circle at top, #121228, #0d0d20 70%);
-    color: #e9ecef; /* Lighter text color for better readability */
-    overflow-x: hidden;
     min-height: 100vh;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
 }
 
 /* === Navbar === */
 .navbar {
-    background: rgba(20, 20, 40, 0.9);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
 }
-
 .navbar .btn {
     border-radius: 8px;
     transition: all 0.3s ease;
@@ -22,142 +21,170 @@ body {
     transform: scale(1.05);
 }
 
-/* === Dashboard Cards === */
-.dashboard-card {
-    background: rgba(45, 45, 70, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    transition: all 0.4s ease-in-out;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-}
-.dashboard-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 25px rgba(255, 204, 112, 0.2);
+/* === Login Wrapper === */
+.login-wrapper {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
 }
 
-/* === Form Card === */
-.form-card {
-    background: rgba(35, 35, 55, 0.9);
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+/* === Login Card === */
+.login-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 18px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    padding: 45px 35px;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    animation: fadeUp 0.8s ease;
 }
-
-/* === Buttons === */
-.btn {
-    transition: all 0.3s ease;
-    border-radius: 10px;
-    font-weight: 500;
-}
-.btn:hover {
-    transform: scale(1.05);
-}
-
-/* === Tables === */
-.table {
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-}
-.table-dark {
-    background: rgba(25, 25, 45, 0.9);
-}
-.table-hover tbody tr:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* === Text Colors for Better Readability === */
-.text-light {
-    color: #e9ecef !important; /* Brighter light text */
-}
-
-.text-muted {
-    color: #adb5bd !important; /* Brighter muted text */
-}
-
-.lead {
-    color: #dee2e6 !important; /* Brighter lead text */
-}
-
-.card-body p {
-    color: #e9ecef !important; /* Ensure all card text is readable */
-}
-
-.card-body .text-light {
-    color: #e9ecef !important; /* Force light text in cards */
-}
-
-/* === User Name Specific Styling === */
-.user-name {
-    color: #ffffff !important; /* Pure white for user names */
-    font-weight: 600;
-}
-
-.card h5 {
-    color: #ffffff !important; /* Force white for all h5 headings in cards */
-    font-weight: 600;
-}
-
-/* === Alert Boxes === */
-.alert {
-    color: #212529 !important; /* Dark text for alerts */
-}
-
-.alert-info {
-    background-color: rgba(13, 202, 240, 0.2);
-    border-color: #0dcaf0;
-}
-
-.alert-info h6 {
-    color: #055160 !important;
-}
-
-.alert-info ul {
-    color: #055160 !important;
-}
-
-/* === Form Labels === */
-.form-label {
-    color: #f8f9fa !important; /* Bright form labels */
-}
-
-/* === Badges === */
-.badge {
-    color: #212529 !important; /* Dark text for badges */
-}
-
-/* === Footer === */
-footer {
-    color: #adb5bd !important; /* Brighter footer text */
-    padding: 10px 0;
-}
-
-/* === Animations === */
-.fade-in {
-    animation: fadeIn 1.2s ease-in-out;
-}
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* === Custom text classes for specific elements === */
-.card-text {
-    color: #e9ecef !important;
+.login-card i {
+    font-size: 3rem;
+    color: #ffb703;
+    margin-bottom: 15px;
 }
 
-.user-description {
-    color: #dee2e6 !important;
+.login-card h2 {
+    color: #1f1f1f;
+    font-weight: 700;
+    margin-bottom: 5px;
 }
 
-.stats-description {
-    color: #ced4da !important;
+.login-card p {
+    color: #6c757d;
+    font-size: 0.95rem;
+    margin-bottom: 25px;
 }
 
-/* === Ensure all text in user cards is visible === */
-.card .text-light {
-    color: #ffffff !important;
+/* === Login Fields === */
+.login-field {
+    background: #f8f9fa;
+    border: 1px solid #ced4da;
+    color: #212529;
+    border-radius: 8px;
+    padding: 10px 14px;
+    transition: all 0.3s ease;
+    font-weight: 500;
 }
 
-.form-card h5 {
-    color: #ffffff !important;
+.login-field:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 6px rgba(13, 110, 253, 0.2);
+    outline: none;
+}
+
+/* === Login Button === */
+.btn-login {
+    background: linear-gradient(90deg, #0d6efd, #5bc0f8);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 0;
+    font-weight: 500;
+    width: 100%;
+    transition: all 0.25s ease;
+    letter-spacing: 0.3px;
+    font-size: 1rem;
+}
+
+.btn-login:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(90deg, #0b5ed7, #4ea8de);
+    box-shadow: 0 3px 8px rgba(13, 110, 253, 0.2);
+}
+
+/* === Login Footer === */
+.login-footer {
+    margin-top: 15px;
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+
+/* === Welcome Page === */
+body.welcome {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #fff;
+    overflow: hidden;
+    background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR1HM0PunNN5b1Krbe-HA0YkP6MF8jfGDCSw&s') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+}
+
+body.welcome::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+}
+
+.content-wrapper {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.welcome-text {
+    font-size: 3em;
+    font-weight: bold;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(-30px);
+    animation: fadeSlideIn 1.5s forwards;
+    z-index: 1;
+}
+
+.subtext {
+    margin-top: 15px;
+    font-size: 1.2em;
+    opacity: 0;
+    animation: fadeIn 2s 0.5s forwards;
+    z-index: 1;
+}
+
+.progress-container {
+    margin-top: 40px;
+    width: 300px;
+    height: 15px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background: #fff;
+    border-radius: 10px;
+    animation: fillProgress 3s forwards;
+}
+
+@keyframes fadeSlideIn {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+@keyframes fillProgress {
+    to { width: 100%; }
 }
