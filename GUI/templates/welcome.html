@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    <style>
+        /* Page setup with background image */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            color: #fff;
+            overflow: hidden;
+            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQR1HM0PunNN5b1Krbe-HA0YkP6MF8jfGDCSw&s') no-repeat center center fixed;
+            background-size: cover;
+            position: relative;
+        }
+
+        /* Overlay to make text readable */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* dark overlay */
+            z-index: 0;
+        }
+
+        /* Welcome text animation */
+        .welcome-text {
+            font-size: 3em;
+            font-weight: bold;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(-30px);
+            animation: fadeSlideIn 1.5s forwards;
+            z-index: 1;
+        }
+
+        @keyframes fadeSlideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Subtext animation */
+        .subtext {
+            margin-top: 15px;
+            font-size: 1.2em;
+            opacity: 0;
+            animation: fadeIn 2s 0.5s forwards;
+            z-index: 1;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Progress bar container */
+        .progress-container {
+            margin-top: 40px;
+            width: 300px;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        /* Animated progress bar */
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background: #fff;
+            border-radius: 10px;
+            animation: fillProgress 3s forwards;
+        }
+
+        @keyframes fillProgress {
+            to { width: 100%; }
+        }
+
+        /* Make sure all content is above overlay */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-wrapper">
+        <div class="welcome-text">Welcome to the Dashboard!</div>
+        <div class="subtext">Getting things ready...</div>
+
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+
+    <script>
+        // Redirect to dashboard after 3 seconds
+        setTimeout(() => {
+            window.location.href = "{{ url_for('home') }}";
+        }, 3000);
+    </script>
+</body>
+</html>
