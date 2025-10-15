@@ -1,0 +1,128 @@
+{% extends "layout.html" %}
+{% block content %}
+<style>
+    /* === Light Elegant Login Page (Refined) === */
+    body {
+        background: linear-gradient(135deg, #e9f0ff, #fef9f3);
+        background-attachment: fixed;
+        font-family: 'Poppins', sans-serif;
+        min-height: 100vh;
+        color: #212529;
+    }
+
+    nav.navbar {
+        background: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+    .login-wrapper {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .login-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 18px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+        padding: 45px 35px;
+        width: 100%;
+        max-width: 420px;
+        text-align: center;
+        animation: fadeUp 0.8s ease;
+    }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-card i {
+        font-size: 3rem;
+        color: #ffb703;
+        margin-bottom: 15px;
+    }
+
+    .login-card h2 {
+        color: #1f1f1f;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .login-card p {
+        color: #6c757d;
+        font-size: 0.95rem;
+        margin-bottom: 25px;
+    }
+
+    .login-field {
+        background: #f8f9fa;
+        border: 1px solid #ced4da;
+        color: #212529;
+        border-radius: 8px;
+        padding: 10px 14px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+
+    .login-field:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 6px rgba(13, 110, 253, 0.2);
+    }
+
+    .btn-login {
+        background: linear-gradient(90deg, #0d6efd, #5bc0f8);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 0;
+        font-weight: 500;
+        width: 100%;
+        transition: all 0.25s ease;
+        letter-spacing: 0.3px;
+        font-size: 1rem;
+    }
+
+    .btn-login:hover {
+        transform: translateY(-1px);
+        background: linear-gradient(90deg, #0b5ed7, #4ea8de);
+        box-shadow: 0 3px 8px rgba(13, 110, 253, 0.2);
+    }
+
+    .login-footer {
+        margin-top: 15px;
+        color: #6c757d;
+        font-size: 0.85rem;
+    }
+</style>
+
+<div class="login-wrapper">
+    <div class="login-card">
+        <i class="bi bi-shield-lock-fill"></i>
+        <h2>Admin Login</h2>
+        <p>Access your secure Screen Locker Dashboard</p>
+
+        <form method="POST">
+            <div class="mb-3 text-start">
+                <label class="form-label fw-semibold">Username</label>
+                <input type="text" name="username" class="form-control form-control-lg login-field" placeholder="Enter username" required>
+            </div>
+            <div class="mb-3 text-start">
+                <label class="form-label fw-semibold">Password</label>
+                <input type="password" name="password" class="form-control form-control-lg login-field" placeholder="Enter password" required>
+            </div>
+            <button type="submit" class="btn btn-login mt-2">
+                <i class="bi bi-box-arrow-in-right"></i> Login
+            </button>
+        </form>
+
+        <div class="login-footer">
+            <i class="bi bi-info-circle"></i> Authorized access only
+        </div>
+    </div>
+</div>
+{% endblock %}
