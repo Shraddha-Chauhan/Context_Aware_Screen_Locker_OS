@@ -1,53 +1,362 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="card shadow-lg p-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="text-warning mb-0"><i class="bi bi-people"></i> Authorized Users</h3>
-        <span class="badge bg-warning text-dark fs-6">{{ users|length }} users</span>
-    </div>
+<div class="view-users-container">
+    <div class="card view-users-theme">
+        <!-- Header Section -->
+        <div class="card-header-view-users py-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="view-users-title mb-2">
+                        <i class="bi bi-people-fill me-3"></i> Authorized Users
+                    </h2>
+                    <p class="view-users-subtitle">Manage user access and permissions</p>
+                </div>
+                <div class="header-stats-view-users">
+                    <div class="users-count-badge">
+                        <span class="count-number">{{ users|length }}</span>
+                        <span class="count-label">users</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    {% if users %}
-    <div class="table-responsive">
-        <table class="table table-dark table-hover align-middle rounded-3 overflow-hidden">
-            <thead class="table-warning text-dark">
-                <tr>
-                    <th><i class="bi bi-person"></i> User Name</th>
-                    <th class="text-center"><i class="bi bi-gear"></i> Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in users %}
-                <tr>
-                    <td class="fw-semibold">
-                        <i class="bi bi-person-circle me-2 text-warning"></i>
-                        <span class="user-name">{{ user }}</span>
-                    </td>
-                    <td class="text-center">
-                        <a href="/remove_user/{{ user }}" 
-                           class="btn btn-danger btn-sm"
-                           onclick="return confirm('Are you sure you want to remove {{ user }}? This will delete their face embedding permanently.')">
-                            <i class="bi bi-trash"></i> Remove
-                        </a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    {% else %}
-    <div class="text-center py-5">
-        <i class="bi bi-people display-1 text-muted mb-3"></i>
-        <h4 class="text-warning">No Users Found</h4>
-        <p class="user-description">No authorized users have been registered yet.</p>
-        <a href="/add_user" class="btn btn-primary">
-            <i class="bi bi-person-plus"></i> Add First User
-        </a>
-    </div>
-    {% endif %}
+        <div class="card-body p-4">
+            {% if users %}
+            <!-- Users Table -->
+            <div class="table-responsive">
+                <table class="table view-users-table align-middle">
+                    <thead class="view-users-thead">
+                        <tr>
+                            <th class="ps-4">
+                                <i class="bi bi-person-gear me-2"></i> User Details
+                            </th>
+                            <th class="text-center">
+                                <i class="bi bi-activity me-2"></i> Actions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr class="view-users-row">
+                            <td class="ps-4 py-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="user-avatar-view me-3">
+                                        <i class="bi bi-person-circle"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="user-name-view mb-1">{{ user }}</h6>
+                                        <small class="user-role-view">
+                                            <i class="bi bi-clock-history me-1"></i> Registered user
+                                        </small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center py-3">
+                                <a href="/remove_user/{{ user }}" 
+                                   class="btn btn-danger-view-users"
+                                   onclick="return confirm('⚠️ Are you sure you want to remove {{ user }}?\\n\\nThis will permanently delete their face embedding and access rights.')">
+                                    <i class="bi bi-trash-fill me-1"></i> Remove
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <!-- Empty State -->
+            <div class="text-center py-5 empty-state-view-users">
+                <div class="empty-icon-view mb-4">
+                    <i class="bi bi-people"></i>
+                </div>
+                <h4 class="empty-title-view mb-3">No Users Found</h4>
+                <p class="empty-text-view mb-4">No authorized users have been registered in the system yet.</p>
+                <a href="/add_user" class="btn btn-primary-view-users">
+                    <i class="bi bi-person-plus-fill me-2"></i> Add First User
+                </a>
+            </div>
+            {% endif %}
 
-    <div class="text-center mt-4">
-        <a href="/" class="btn btn-outline-light me-2"><i class="bi bi-arrow-left"></i> Back to Dashboard</a>
-        <a href="/add_user" class="btn btn-primary"><i class="bi bi-person-plus"></i> Add New User</a>
+            <!-- Action Buttons -->
+            <div class="view-users-actions mt-4 pt-4">
+                <a href="/" class="btn btn-secondary-view-users me-3">
+                    <i class="bi bi-arrow-left me-2"></i> Back to Dashboard
+                </a>
+                <a href="/add_user" class="btn btn-primary-view-users">
+                    <i class="bi bi-person-plus-fill me-2"></i> Add New User
+                </a>
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+    /* View Users Page Theme - Purple Management Theme */
+    .view-users-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .view-users-theme {
+        background: linear-gradient(135deg, #1a103a 0%, #2d1b69 100%);
+        border: 1px solid #4c1d95;
+        border-radius: 20px;
+        box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .card-header-view-users {
+        background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+        border-bottom: none;
+        padding: 2rem 2rem 1.5rem;
+    }
+
+    .view-users-title {
+        color: white;
+        font-weight: 700;
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .view-users-subtitle {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1rem;
+        margin-bottom: 0;
+    }
+
+    .header-stats-view-users {
+        text-align: center;
+    }
+
+    .users-count-badge {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        padding: 1rem 1.5rem;
+        backdrop-filter: blur(10px);
+    }
+
+    .count-number {
+        display: block;
+        font-size: 2rem;
+        font-weight: 700;
+        color: white;
+        line-height: 1;
+    }
+
+    .count-label {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.8);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Table Styles */
+    .view-users-table {
+        background: rgba(26, 16, 58, 0.8);
+        border-radius: 12px;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+        margin-bottom: 0;
+    }
+
+    .view-users-thead {
+        background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+        border: none;
+    }
+
+    .view-users-thead th {
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 1.25rem 1.5rem;
+        font-size: 0.95rem;
+    }
+
+    .view-users-row {
+        background: rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid rgba(124, 58, 237, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .view-users-row:hover {
+        background: rgba(124, 58, 237, 0.1);
+        transform: translateX(5px);
+    }
+
+    .view-users-row:last-child {
+        border-bottom: none;
+    }
+
+    .view-users-row td {
+        border: none;
+        padding: 1.25rem 1.5rem;
+        vertical-align: middle;
+    }
+
+    /* User Avatar */
+    .user-avatar-view {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #7c3aed, #a78bfa);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .user-avatar-view i {
+        font-size: 1.5rem;
+        color: white;
+    }
+
+.user-name-view {
+    color: #8a7bc4;  /* Dark purple-gray */
+    /* ... rest remains the same ... */
+}
+
+    .user-role-view {
+        color: #c4b5fd;
+        font-size: 0.85rem;
+    }
+
+    /* Buttons */
+    .btn-danger-view-users {
+        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-weight: 500;
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+    }
+
+    .btn-danger-view-users:hover {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
+        color: white;
+    }
+
+    .btn-primary-view-users {
+        background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-weight: 600;
+        padding: 12px 24px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary-view-users:hover {
+        background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
+        color: white;
+    }
+
+    .btn-secondary-view-users {
+        background: transparent;
+        border: 1px solid #7c3aed;
+        border-radius: 10px;
+        color: #a78bfa;
+        font-weight: 500;
+        padding: 12px 24px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-secondary-view-users:hover {
+        background: rgba(124, 58, 237, 0.1);
+        border-color: #a78bfa;
+        color: #ddd6fe;
+        transform: translateY(-1px);
+    }
+
+    /* Empty State */
+    .empty-state-view-users {
+        padding: 3rem 2rem;
+    }
+
+    .empty-icon-view {
+        font-size: 4rem;
+        color: #7c3aed;
+        opacity: 0.5;
+        margin-bottom: 1.5rem;
+    }
+
+    .empty-title-view {
+        color: white;
+        font-weight: 600;
+    }
+
+    .empty-text-view {
+        color: #c4b5fd;
+        font-size: 1.1rem;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    /* Action Buttons Container */
+    .view-users-actions {
+        border-top: 1px solid rgba(124, 58, 237, 0.3);
+        text-align: center;
+    }
+
+    /* Animation */
+    @keyframes fadeInScale {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .view-users-theme {
+        animation: fadeInScale 0.6s ease-out;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .card-header-view-users .d-flex {
+            flex-direction: column;
+            text-align: center;
+            gap: 1.5rem;
+        }
+        
+        .view-users-row:hover {
+            transform: none;
+        }
+        
+        .view-users-actions .btn {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        
+        .view-users-actions .btn-secondary-view-users {
+            margin-right: 0 !important;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .view-users-table {
+            font-size: 0.9rem;
+        }
+        
+        .user-avatar-view {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .user-avatar-view i {
+            font-size: 1.25rem;
+        }
+    }
+</style>
 {% endblock %}
