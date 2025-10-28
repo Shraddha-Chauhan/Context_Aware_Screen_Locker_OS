@@ -1,43 +1,271 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card form-card shadow-lg p-4">
-            <h3 class="text-center text-warning mb-4">
-                <i class="bi bi-person-plus"></i> Register New User
-            </h3>
-            
-            <div class="alert alert-info mb-4">
-                <h6><i class="bi bi-info-circle"></i> How it works:</h6>
-                <ul class="mb-0 small">
-                    <li>Enter the user's name</li>
-                    <li>Click "Capture Face & Register"</li>
-                    <li>Allow camera access when prompted</li>
-                    <li>Face embedding will be stored securely</li>
-                </ul>
+    <div class="col-md-8 col-lg-6">
+        <div class="card add-user-theme form-card">
+            <!-- Header Section -->
+            <div class="card-header-add-user text-center py-4">
+                <div class="add-user-icon mb-3">
+                    <i class="bi bi-person-plus-fill"></i>
+                </div>
+                <h2 class="card-title-add-user">Register New User</h2>
+                <p class="card-subtitle-add-user">Add facial recognition access</p>
             </div>
-
-            <form method="POST">
-                <div class="mb-4">
-                    <label for="name" class="form-label fw-semibold">User Name</label>
-                    <input type="text" name="name" class="form-control form-control-lg bg-dark text-light border-0" 
-                           placeholder="Enter full name" required>
+            
+            <div class="card-body p-4">
+                <!-- Information Card -->
+                <div class="info-card-add-user mb-4">
+                    <div class="d-flex">
+                        <i class="bi bi-info-circle-fill info-icon-add-user me-3"></i>
+                        <div>
+                            <h6 class="info-title-add-user mb-2">Face Registration Process</h6>
+                            <ul class="info-list-add-user mb-0">
+                                <li class="info-list-item">Enter the user's full name</li>
+                                <li class="info-list-item">Click "Capture Face & Register"</li>
+                                <li class="info-list-item">Allow camera access when prompted</li>
+                                <li class="info-list-item">Face embeddings are securely stored</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary btn-lg me-3">
-                        <i class="bi bi-camera"></i> Capture Face & Register
-                    </button>
-                    <a href="/" class="btn btn-secondary btn-lg">Cancel</a>
-                </div>
-            </form>
 
-            <div class="mt-4 text-center">
-                <small class="user-description">
-                    <i class="bi bi-shield-lock"></i> Face embeddings are stored securely in <code>authorized_users.pkl</code>
-                </small>
+                <!-- Registration Form -->
+                <form method="POST">
+                    <div class="mb-4">
+                        <label for="name" class="form-label-add-user mb-3">
+                            <i class="bi bi-person-badge me-2"></i>User Name
+                        </label>
+                        <input type="text" name="name" class="form-control-add-user" 
+                               placeholder="Enter full name..." required>
+                        <div class="form-text-add-user mt-2">
+                            <i class="bi bi-lightbulb me-1"></i>
+                            Use the person's real name for easy identification
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary-add-user btn-lg me-3">
+                            <i class="bi bi-camera-fill me-2"></i> Capture Face & Register
+                        </button>
+                        <a href="/" class="btn btn-secondary-add-user btn-lg">
+                            <i class="bi bi-arrow-left me-2"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+
+                <!-- Security Footer -->
+                <div class="mt-5 text-center">
+                    <div class="security-footer-add-user">
+                        <i class="bi bi-shield-lock-fill me-2"></i>
+                        <small>
+                            Face embeddings are securely encrypted and stored in the system database
+                        </small>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    /* Add User Page Theme - Blue Security Theme */
+    .add-user-theme {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        border: 1px solid #334155;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+    }
+
+    .card-header-add-user {
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        border-bottom: none;
+    }
+
+    .add-user-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        backdrop-filter: blur(10px);
+    }
+
+    .add-user-icon i {
+        font-size: 2.5rem;
+        color: white;
+    }
+
+    .card-title-add-user {
+        color: white;
+        font-weight: 700;
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-subtitle-add-user {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1rem;
+    }
+
+    /* Info Card */
+    .info-card-add-user {
+        background: rgba(30, 64, 175, 0.1);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        border-radius: 12px;
+        padding: 1.5rem;
+        backdrop-filter: blur(10px);
+    }
+
+    .info-icon-add-user {
+        font-size: 1.5rem;
+        color: #3b82f6;
+        margin-top: 0.25rem;
+    }
+
+    .info-title-add-user {
+        color: #3b82f6;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .info-list-add-user {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .info-list-item {
+        color: #cbd5e1;
+        padding: 0.25rem 0;
+        position: relative;
+        padding-left: 1rem;
+    }
+
+    .info-list-item::before {
+        content: '•';
+        color: #3b82f6;
+        position: absolute;
+        left: 0;
+    }
+
+    /* Form Elements */
+    .form-label-add-user {
+        color: #e2e8f0;
+        font-weight: 600;
+        font-size: 1rem;
+    }
+
+    .form-control-add-user {
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid #475569;
+        border-radius: 10px;
+        color: white;
+        padding: 12px 16px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .form-control-add-user:focus {
+        background: rgba(15, 23, 42, 0.9);
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        color: white;
+    }
+
+    .form-control-add-user::placeholder {
+        color: #64748b;
+    }
+
+    .form-text-add-user {
+        color: #94a3b8;
+        font-size: 0.85rem;
+    }
+
+    /* Buttons */
+    .btn-primary-add-user {
+        background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+        border: none;
+        border-radius: 10px;
+        color: white;
+        font-weight: 600;
+        padding: 12px 30px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary-add-user:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+        background: linear-gradient(135deg, #4a90f7 0%, #2d50c0 100%);
+        color: white;
+    }
+
+    .btn-secondary-add-user {
+        background: transparent;
+        border: 1px solid #475569;
+        border-radius: 10px;
+        color: #94a3b8;
+        font-weight: 500;
+        padding: 12px 30px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-secondary-add-user:hover {
+        background: rgba(71, 85, 105, 0.2);
+        border-color: #64748b;
+        color: #e2e8f0;
+        transform: translateY(-1px);
+    }
+
+    /* Security Footer */
+    .security-footer-add-user {
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid #334155;
+        border-radius: 10px;
+        padding: 1rem;
+        color: #94a3b8;
+        backdrop-filter: blur(10px);
+    }
+
+    .security-footer-add-user i {
+        color: #3b82f6;
+    }
+
+    /* Animation */
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .add-user-theme {
+        animation: slideInUp 0.6s ease-out;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .card-header-add-user {
+            padding: 2rem 1rem;
+        }
+        
+        .btn-primary-add-user,
+        .btn-secondary-add-user {
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+        
+        .btn-primary-add-user {
+            margin-right: 0 !important;
+        }
+    }
+</style>
 {% endblock %}
