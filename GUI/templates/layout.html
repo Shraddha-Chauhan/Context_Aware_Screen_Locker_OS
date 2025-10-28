@@ -7,21 +7,37 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow-sm">
+<body class="bg-gradient-primary">
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="stars"></div>
+        <div class="stars2"></div>
+        <div class="stars3"></div>
+    </div>
+
+    <!-- Enhanced Navbar with Visible Buttons -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top enhanced-navbar">
         <div class="container-fluid">
-            <a class="navbar-brand fw-bold text-warning" href="/">
-                <i class="bi bi-shield-lock"></i> Screen Locker
+            <a class="navbar-brand fw-bold brand-logo" href="/">
+                <i class="bi bi-shield-lock-fill me-2"></i> Screen Locker Pro
             </a>
-            <div>
+            <div class="navbar-buttons">
                 {% if session.get('logged_in') %}
-                    <a class="btn btn-outline-light me-2" href="/add_user"><i class="bi bi-person-plus"></i> Add User</a>
-                    <a class="btn btn-outline-info me-2" href="/view_users"><i class="bi bi-people"></i> View Users</a>
-                    <a class="btn btn-outline-danger" href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                    <a class="btn btn-nav-light me-2" href="/add_user">
+                        <i class="bi bi-person-plus-fill me-1"></i> Add User
+                    </a>
+                    <a class="btn btn-nav-light me-2" href="/view_users">
+                        <i class="bi bi-people-fill me-1"></i> View Users
+                    </a>
+                    <a class="btn btn-nav-danger" href="/logout">
+                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </a>
                 {% else %}
-                    <a class="btn btn-outline-light" href="/login"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+                    <a class="btn btn-nav-success" href="/login">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                    </a>
                 {% endif %}
             </div>
         </div>
@@ -31,10 +47,10 @@
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
-                        <i class="bi bi-{{ 'exclamation-triangle' if category == 'error' else 'check-circle' }} me-2"></i>
+                    <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show glass-alert" role="alert">
+                        <i class="bi bi-{{ 'exclamation-triangle-fill' if category == 'error' else 'check-circle-fill' }} me-2"></i>
                         {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
                     </div>
                 {% endfor %}
             {% endif %}
@@ -42,10 +58,168 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="text-center mt-5 text-light small">
-        <hr class="border-secondary">
-        © 2025 Screen Locker | Secure Access System
+    <footer class="text-center mt-5 text-light small py-4">
+        <div class="glass-footer py-3">
+            <i class="bi bi-c-circle"></i> 2025 Screen Locker Pro | Secure Biometric Access System
+        </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        /* Enhanced Navbar with Visible Buttons */
+        .enhanced-navbar {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            padding: 0.8rem 0;
+        }
+
+        .brand-logo {
+            color: #ffffff !important;
+            font-size: 1.4rem;
+            text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .brand-logo:hover {
+            color: #a5b4fc !important;
+            text-shadow: 0 0 15px rgba(99, 102, 241, 0.8);
+        }
+
+        .navbar-buttons {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        /* Light Buttons for Better Visibility */
+        .btn-nav-light {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #1a1a2e !important;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-nav-light:hover {
+            background: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+            color: #1a1a2e !important;
+        }
+
+        .btn-nav-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: white !important;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 10px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-nav-danger:hover {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+            color: white !important;
+        }
+
+        .btn-nav-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: white !important;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-nav-success:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            color: white !important;
+        }
+
+        /* Enhanced Alert */
+        .glass-alert {
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Enhanced Footer */
+        .glass-footer {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 0 1rem;
+        }
+
+        /* Responsive Navbar */
+        @media (max-width: 991px) {
+            .navbar-buttons {
+                flex-direction: column;
+                width: 100%;
+                gap: 0.5rem;
+                margin-top: 1rem;
+            }
+            
+            .btn-nav-light,
+            .btn-nav-danger,
+            .btn-nav-success {
+                width: 100%;
+                text-align: center;
+                margin: 0.25rem 0;
+            }
+            
+            .enhanced-navbar .container-fluid {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .brand-logo {
+                font-size: 1.2rem;
+            }
+            
+            .btn-nav-light,
+            .btn-nav-danger,
+            .btn-nav-success {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Animation for navbar buttons */
+        @keyframes buttonGlow {
+            0%, 100% {
+                box-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
+            }
+            50% {
+                box-shadow: 0 2px 15px rgba(255, 255, 255, 0.4);
+            }
+        }
+
+        .btn-nav-light {
+            animation: buttonGlow 3s ease-in-out infinite;
+        }
+    </style>
 </body>
 </html>
