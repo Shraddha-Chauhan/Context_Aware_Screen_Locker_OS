@@ -1,0 +1,85 @@
+#!/usr/bin/env python3
+import os
+import getpass
+import subprocess
+from pathlib import Path
+
+# ===========================================================
+# CONFIGURATION
+# ===========================================================
+SERVICE_NAME = "com.user.face-security"
+SCRIPT_PATH = "/Users/{user}/Documents/face_security.py"  # path to your main script
+LOG_PATH = "/Users/{user}/Library/Logs/face_security.log"
+ERROR_LOG_PATH = "/Users/{user}/Library/Logs/face_security_error.log"
+PLIST_PATH = "/Users/{user}/Library/LaunchAgents/{service}.plist"
+
+# ===========================================================
+# MAIN LOGIC
+# ===========================================================
+def create_plist(user):
+    """Generate LaunchAgent plist for macOS background service"""
+    plist_content = f"""<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>{SERVICE_NAME}</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>{SCRIPT_PATH.format(user=user)}</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <key>KeepAlive</key>
+    <true/>
+
+    <key>StandardOutPath</key>
+    <string>{LOG_PATH.format(user=user)}</string>
+
+    <key>StandardErrorPath</key>
+    <string>{ERROR_LOG_PATH.format(user=user)}</string>
+</dict>
+</plist>
+"""
+    plist_file = PLIST_PATH.format(user=user, service=SERVICE_NAME)
+    os.makedirs(os.path.dirname(plist_file), exist_ok=True)
+    with open(plist_file, "w") as f:
+        f.write(plist_content)
+    return plist_file
+
+
+def install_service():
+    """Install and start LaunchAgent service"""
+    user = getpass.getuser()
+    plist_file = create_plist(user)
+
+    print(f"✅ Created LaunchAgent plist at:\n{plist_file}")
+
+    # Ensure script has execution permission
+    script_file = SCRIPT_PATH.format(user=user)
+    if not os.path.exists(script_file):
+        print(f"❌ ERROR: Face security script not found at {script_file}")
+        return
+
+    subprocess.run(["chmod", "+x", script_file], check=False)
+
+    # Load and start the service
+    print("⚙️ Loading background service...")
+    subprocess.run(["launchctl", "unload", plist_file], check=False)
+    subprocess.run(["launchctl", "load", plist_file], check=False)
+    subprocess.run(["launchctl", "start", SERVICE_NAME], check=False)
+
+    print("\n🚀 Face-Aware Security System is now running as a background service!")
+    print("🧩 It will auto-start every time you log in.")
+    print(f"📜 Log file: {LOG_PATH.format(user=user)}")
+    print(f"⚠️ Errors (if any): {ERROR_LOG_PATH.format(user=user)}")
+    print("\nTo stop it manually, run:")
+    print(f"launchctl unload {plist_file}")
+
+
+if __name__ == "__main__":
+    install_service()
