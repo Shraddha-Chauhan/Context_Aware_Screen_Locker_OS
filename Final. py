@@ -1,0 +1,287 @@
+#!/usr/bin/env python3
+import os
+import cv2
+import time
+import subprocess
+import sys
+import numpy as np
+import getpass
+from datetime import datetime
+import smtplib
+from email.message import EmailMessage
+from pynput import mouse, keyboard
+import face_recognition
+from pathlib import Path
+
+# =====================================================================================
+# CONFIGURATION
+# =====================================================================================
+IDLE_THRESHOLD = 5  # seconds of inactivity before triggering face check
+TOLERANCE = 0.45    # matching threshold (same as Flask GUI)
+
+EMAIL_ADDRESS = "varima28@gmail.com"
+EMAIL_PASSWORD = "dulsnksnprhjslfa"  # app password
+RECIPIENT = "varimadudeja10@gmail.com"
+
+AUTHORIZED_EMBEDDINGS_FILE = "/Users/varimadudeja/Documents/VD28/OS Project/GUI/embeddings.npy"
+INTRUDER_DIR = "/Users/varimadudeja/Documents/VD28/OS Project/intruder_snapshots"
+os.makedirs(INTRUDER_DIR, exist_ok=True)
+
+# =====================================================================================
+# GLOBALS
+# =====================================================================================
+last_active = time.time()
+system_locked = False
+face_detected_during_idle = False
+relogin_detected = False
+
+# =====================================================================================
+# ACTIVITY MONITORING
+# =====================================================================================
+def reset_activity():
+    """Resets idle timer when user becomes active."""
+    global last_active, system_locked, face_detected_during_idle, relogin_detected
+    last_active = time.time()
+    face_detected_during_idle = False
+    if system_locked:
+        system_locked = False
+        relogin_detected = True
+        print("🔓 System re-login detected — resetting security system.")
+    else:
+        relogin_detected = False
+
+def on_mouse_move(x, y): reset_activity()
+def on_click(x, y, button, pressed): reset_activity()
+def on_scroll(x, y, dx, dy): reset_activity()
+def on_key_press(key): reset_activity()
+
+# =====================================================================================
+# FACE RECOGNITION
+# =====================================================================================
+def load_authorized_embeddings():
+    """Load authorized user embeddings safely from .npy file."""
+    if not os.path.exists(AUTHORIZED_EMBEDDINGS_FILE):
+        print(f"⚠️ Authorized embeddings file not found: {AUTHORIZED_EMBEDDINGS_FILE}")
+        return np.empty((0, 128))
+    try:
+        data = np.load(AUTHORIZED_EMBEDDINGS_FILE, allow_pickle=True).item()
+        if isinstance(data, dict) and "users" in data:
+            embeddings = []
+            for name, emb in data["users"].items():
+                arr = np.array(emb)
+                if arr.ndim == 1 and arr.shape[0] == 128:
+                    embeddings.append(arr)
+                    print(f"✅ Loaded embedding for '{name}'")
+            return np.vstack(embeddings) if embeddings else np.empty((0, 128))
+        else:
+            print("⚠️ Invalid file format or missing key.")
+            return np.empty((0, 128))
+    except Exception as e:
+        print(f"⚠️ Failed to load embeddings: {e}")
+        return np.empty((0, 128))
+
+def match_face_to_authorized(face_encoding, authorized_encodings, tolerance=TOLERANCE):
+    """Compare captured face with stored authorized embeddings."""
+    if authorized_encodings.size == 0:
+        return False
+    matches = face_recognition.compare_faces(authorized_encodings, face_encoding, tolerance)
+    return True in matches
+
+# =====================================================================================
+# SECURITY LOGIC
+# =====================================================================================
+def detect_faces_and_handle_security():
+    """Main detection and locking function."""
+    global system_locked
+    cap = cv2.VideoCapture(0)
+    authorized_encodings = load_authorized_embeddings()
+
+    try:
+        if not cap.isOpened():
+            print("⚠️ Camera not accessible.")
+            return
+
+        # Warm-up camera
+        for _ in range(8):
+            ret, _ = cap.read()
+            time.sleep(0.1)
+
+        for attempt in range(2):  # retry twice
+            ret, frame = cap.read()
+            if not ret or frame is None:
+                print("⚠️ Failed to capture frame.")
+                return
+
+            rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            face_locations = face_recognition.face_locations(rgb_frame)
+            face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
+
+            if len(face_encodings) == 0:
+                print(f"Attempt {attempt+1}: No face detected.")
+                if attempt == 0:
+                    time.sleep(1)
+                    continue
+                else:
+                    print("No face after 2 attempts — locking system.")
+                    lock_system()
+                    return
+
+            for encoding, (top, right, bottom, left) in zip(face_encodings, face_locations):
+                match = match_face_to_authorized(encoding, authorized_encodings)
+                timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+                snapshot_path = os.path.join(INTRUDER_DIR, f"intruder_{timestamp}.jpg")
+                cv2.rectangle(frame, (left, top), (right, bottom),
+                              (0, 255, 0) if match else (0, 0, 255), 2)
+                cv2.putText(frame, "AUTHORIZED" if match else "INTRUDER",
+                            (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.7,
+                            (0, 255, 0) if match else (0, 0, 255), 2)
+                cv2.imwrite(snapshot_path, frame)
+
+                if match:
+                    print("✅ Authorized user detected.")
+                    if os.path.exists(snapshot_path):
+                        os.remove(snapshot_path)
+                    return
+                else:
+                    print("🚨 Unauthorized user detected — locking system & sending alert.")
+                    send_intruder_alert(snapshot_path, timestamp)
+                    lock_system()
+                    if os.path.exists(snapshot_path):
+                        os.remove(snapshot_path)
+                    return
+    except Exception as e:
+        print(f"⚠️ Error in detection: {e}")
+    finally:
+        cap.release()
+        cv2.destroyAllWindows()
+
+# =====================================================================================
+# EMAIL ALERT
+# =====================================================================================
+def send_intruder_alert(snapshot_path, timestamp):
+    """Send an email alert with intruder snapshot."""
+    subject = "🚨 Security Alert: Unauthorized Access Detected"
+    body = f"An intruder was detected at {timestamp}. The system was locked automatically."
+    try:
+        msg = EmailMessage()
+        msg["From"] = EMAIL_ADDRESS
+        msg["To"] = RECIPIENT
+        msg["Subject"] = subject
+        msg.set_content(body)
+        with open(snapshot_path, "rb") as f:
+            msg.add_attachment(f.read(), maintype="image", subtype="jpeg",
+                               filename=os.path.basename(snapshot_path))
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+            smtp.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+            smtp.send_message(msg)
+        print(f"📧 Alert sent to {RECIPIENT}")
+    except Exception as e:
+        print(f"⚠️ Failed to send email: {e}")
+
+# =====================================================================================
+# SYSTEM LOCK
+# =====================================================================================
+def lock_system():
+    """Lock system screen immediately."""
+    global system_locked
+    print("🔒 Locking system...")
+    try:
+        if sys.platform == "darwin":
+            subprocess.run(["pmset", "displaysleepnow"], check=True, timeout=10)
+        elif os.name == "nt":
+            subprocess.run(["rundll32.exe", "user32.dll,LockWorkStation"], check=True, timeout=10)
+        else:
+            for cmd in [["gnome-screensaver-command", "--lock"], ["xdg-screensaver", "lock"], ["loginctl", "lock-session"], ["i3lock"]]:
+                try:
+                    subprocess.run(cmd, check=True, timeout=10)
+                    break
+                except:
+                    continue
+        system_locked = True
+    except Exception as e:
+        print(f"⚠️ Error locking system: {e}")
+
+# =====================================================================================
+# MAIN MONITOR LOOP
+# =====================================================================================
+def start_security_system():
+    """Main function for idle and face detection."""
+    global last_active, system_locked
+    print("🧠 Face-Aware Security System Activated.")
+    print(f"⏱️ Idle threshold: {IDLE_THRESHOLD} seconds")
+
+    mouse_listener = mouse.Listener(on_move=on_mouse_move, on_click=on_click, on_scroll=on_scroll)
+    keyboard_listener = keyboard.Listener(on_press=on_key_press)
+    mouse_listener.start()
+    keyboard_listener.start()
+
+    try:
+        while True:
+            if system_locked:
+                time.sleep(1)
+                continue
+            if time.time() - last_active >= IDLE_THRESHOLD:
+                print(f"\n⚠️ Idle for {IDLE_THRESHOLD}s — scanning...")
+                detect_faces_and_handle_security()
+                last_active = time.time()
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("\n🛑 Stopping system...")
+    finally:
+        mouse_listener.stop()
+        keyboard_listener.stop()
+        cv2.destroyAllWindows()
+        print("✅ Security system stopped.")
+
+# =====================================================================================
+# macOS BACKGROUND SERVICE SETUP (LaunchAgent)
+# =====================================================================================
+SERVICE_NAME = "com.user.face-security"
+SCRIPT_PATH = f"/Users/{getpass.getuser()}/Documents/face_security_service.py"
+LOG_PATH = f"/Users/{getpass.getuser()}/Library/Logs/face_security.log"
+ERROR_LOG_PATH = f"/Users/{getpass.getuser()}/Library/Logs/face_security_error.log"
+PLIST_PATH = f"/Users/{getpass.getuser()}/Library/LaunchAgents/{SERVICE_NAME}.plist"
+
+def create_plist():
+    """Generate LaunchAgent plist for macOS background service."""
+    plist_content = f"""<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
+    "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key><string>{SERVICE_NAME}</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>{SCRIPT_PATH}</string>
+        <string>--run</string>
+    </array>
+    <key>RunAtLoad</key><true/>
+    <key>KeepAlive</key><true/>
+    <key>StandardOutPath</key><string>{LOG_PATH}</string>
+    <key>StandardErrorPath</key><string>{ERROR_LOG_PATH}</string>
+</dict>
+</plist>
+"""
+    os.makedirs(os.path.dirname(PLIST_PATH), exist_ok=True)
+    with open(PLIST_PATH, "w") as f:
+        f.write(plist_content)
+    return PLIST_PATH
+
+def install_service():
+    """Install and start the LaunchAgent."""
+    plist_file = create_plist()
+    subprocess.run(["chmod", "+x", SCRIPT_PATH], check=False)
+    subprocess.run(["launchctl", "unload", plist_file], check=False)
+    subprocess.run(["launchctl", "load", plist_file], check=False)
+    subprocess.run(["launchctl", "start", SERVICE_NAME], check=False)
+    print(f"🚀 Service installed and running.\n📜 Logs: {LOG_PATH}")
+
+# =====================================================================================
+# ENTRY POINT
+# =====================================================================================
+if __name__ == "__main__":
+    if "--run" in sys.argv:
+        start_security_system()
+    else:
+        install_service()
